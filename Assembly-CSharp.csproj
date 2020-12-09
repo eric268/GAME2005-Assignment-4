@@ -55,9 +55,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BulletPool.cs" />
-     <Compile Include="Assets\DoSomething.cs" />
-     <Compile Include="Assets\InstantiateManager.cs" />
+     <Compile Include="Assets\Bullets &amp; Pool Scrips\Bullet.cs" />
+     <Compile Include="Assets\Bullets &amp; Pool Scrips\BulletPhysics.cs" />
+     <Compile Include="Assets\Bullets &amp; Pool Scrips\BulletPool.cs" />
+     <Compile Include="Assets\Bullets &amp; Pool Scrips\FireBullet.cs" />
+     <Compile Include="Assets\Tank Scrips\MouseLook.cs" />
+     <Compile Include="Assets\Tank Scrips\PlayerMovement.cs" />
+     <Compile Include="Assets\Tank Scrips\RotateBarrel.cs" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
