@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletPhysics : MonoBehaviour
+public class BulletCollision : MonoBehaviour
 {
     //Variables
 
@@ -12,7 +12,7 @@ public class BulletPhysics : MonoBehaviour
     public int amIWorkign = 0;
     public float speed = 0.1f;
     public GameObject Bullet;
-    bool debug = false;
+    //bool debug = false;
 
     void instatiateValues()
     {
@@ -46,16 +46,16 @@ public class BulletPhysics : MonoBehaviour
         float minZ = obj1.transform.position.z - obj1.transform.localScale.z / 2f;
         float maxZ = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
 
-        if (!debug)
-        {
-            Debug.Log("Min X: " + minX);
-            Debug.Log("Max X: " + maxX);
-            Debug.Log("Min Y: " + minY);
-            Debug.Log("Max Y: " + maxY);
-            Debug.Log("Min Z: " + minZ);
-            Debug.Log("Max Z: " + maxZ);
-            debug = true;
-        }
+        //if (!debug)
+        //{
+        //    Debug.Log("Min X: " + minX);
+        //    Debug.Log("Max X: " + maxX);
+        //    Debug.Log("Min Y: " + minY);
+        //    Debug.Log("Max Y: " + maxY);
+        //    Debug.Log("Min Z: " + minZ);
+        //    Debug.Log("Max Z: " + maxZ);
+        //    debug = true;
+        //}
 
         float sphereX = obj2.transform.position.x;
         float sphereY = obj2.transform.position.y;
@@ -88,16 +88,16 @@ public class BulletPhysics : MonoBehaviour
         float minZ = obj1.transform.position.z - obj1.transform.localScale.z / 2f;
         float maxZ = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
 
-        if (!debug)
-        {
-            Debug.Log("Min X: " + minX);
-            Debug.Log("Max X: " + maxX);
-            Debug.Log("Min Y: " + minY);
-            Debug.Log("Max Y: " + maxY);
-            Debug.Log("Min Z: " + minZ);
-            Debug.Log("Max Z: " + maxZ);
-            debug = true;
-        }
+        //if (!debug)
+        //{
+        //    Debug.Log("Min X: " + minX);
+        //    Debug.Log("Max X: " + maxX);
+        //    Debug.Log("Min Y: " + minY);
+        //    Debug.Log("Max Y: " + maxY);
+        //    Debug.Log("Min Z: " + minZ);
+        //    Debug.Log("Max Z: " + maxZ);
+        //    debug = true;
+        //}
 
         float sphereX = obj2.transform.position.x;
         float sphereY = obj2.transform.position.y;
@@ -127,6 +127,7 @@ public class BulletPhysics : MonoBehaviour
         GameObject EW = GameObject.Find("EastWall");
         GameObject WW = GameObject.Find("WestWall");
         GameObject NW = GameObject.Find("NorthWall");
+        GameObject SW = GameObject.Find("SouthWall");
 
 
         for (int i = 0; i < 30; i++)
@@ -144,9 +145,8 @@ public class BulletPhysics : MonoBehaviour
                 {
                     indiBullet.GetComponent<Bullet>().velocity.z = -indiBullet.GetComponent<Bullet>().velocity.z;
                 }
-                if (checkCollisionSphereAABB(NW, indiBullet))
+                if (checkCollisionSphereAABB(NW, indiBullet) || checkCollisionSphereAABB(SW, indiBullet))
                 {
-                    Debug.Log("COLLIDING!!!\n");
                     indiBullet.GetComponent<Bullet>().velocity.x = -indiBullet.GetComponent<Bullet>().velocity.x;
                 }
 

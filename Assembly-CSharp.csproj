@@ -57,7 +57,6 @@
   <ItemGroup>
      <Compile Include="Assets\Bullets &amp; Pool Scrips\Bullet.cs" />
      <Compile Include="Assets\Bullets &amp; Pool Scrips\BulletCollision.cs" />
-     <Compile Include="Assets\Bullets &amp; Pool Scrips\BulletPhysics.cs" />
      <Compile Include="Assets\Bullets &amp; Pool Scrips\BulletPool.cs" />
      <Compile Include="Assets\Bullets &amp; Pool Scrips\FireBullet.cs" />
      <Compile Include="Assets\Tank Scrips\MouseLook.cs" />
