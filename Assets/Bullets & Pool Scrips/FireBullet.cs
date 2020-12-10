@@ -18,7 +18,7 @@ public class FireBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject indivBullet = GameObject.Find("Cube");
+        GameObject indivBullet = GameObject.Find("Ground");
         Bullet_Emitter = GameObject.Find("BulletEmitter");
 
         if (Input.GetMouseButtonDown(0))

@@ -10,7 +10,6 @@ public class BulletPool : MonoBehaviour
    int counter;
 
     public GameObject[] bulletPool;
-
     public GameObject prefab;
 
     // Start is called before the first frame update
