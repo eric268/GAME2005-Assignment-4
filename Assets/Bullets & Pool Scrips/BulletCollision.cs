@@ -12,6 +12,7 @@ public class BulletCollision : MonoBehaviour
     public int amIWorkign = 0;
     public float speed = 0.1f;
     public GameObject Bullet;
+    public GameObject[] boxArray;
     //bool debug = false;
 
     void instatiateValues()
@@ -23,14 +24,18 @@ public class BulletCollision : MonoBehaviour
     // Start is called before the first frame update
 
     void Start()
-    {
-
+    { 
 
         float frameRate = Time.deltaTime;
         instatiateValues();
         acceleration.y = gravity * frameRate;
        // Debug.LogWarning("Acceleration: " + acceleration);
        // Debug.LogWarning("Frame Rate: " + frameRate);
+
+        for (int i=0; i < 6;i++)
+        {
+
+        }
 
     }
 
@@ -118,11 +123,17 @@ public class BulletCollision : MonoBehaviour
 
         return false;
     }
+    void slowBulletOnCollision(Bullet b)
+    {
+        //float slowAmount = 0.1f;
+        //b.velocity *= 0.7f;
+    }
 
     // Update is called once per frame
     void Update()
     {
         GameObject ground = GameObject.Find("Ground");
+        GameObject ceiling = GameObject.Find("Ceiling");
         GameObject Bullet = GameObject.Find("Ground");
         GameObject EW = GameObject.Find("EastWall");
         GameObject WW = GameObject.Find("WestWall");
@@ -136,22 +147,27 @@ public class BulletCollision : MonoBehaviour
 
             if (indiBullet.GetComponent<Bullet>().active)
             {
-                if (checkCollisionSphereAABBRotated(ground, indiBullet))
+                //Debug.Log(indiBullet.GetComponent<Bullet>().velocity.magnitude);
+                if (checkCollisionSphereAABBRotated(ground, indiBullet) || checkCollisionSphereAABB(ceiling, indiBullet))
                 {
                     Debug.Log("COLLIDING!!!\n");
+                    //slowBulletOnCollision(indiBullet.GetComponent<Bullet>());
                     indiBullet.GetComponent<Bullet>().velocity.y = -indiBullet.GetComponent<Bullet>().velocity.y;
+
                 }
                 if (checkCollisionSphereAABBRotated(EW, indiBullet) || checkCollisionSphereAABBRotated(WW, indiBullet))
                 {
+                   // slowBulletOnCollision(indiBullet.GetComponent<Bullet>());
                     indiBullet.GetComponent<Bullet>().velocity.z = -indiBullet.GetComponent<Bullet>().velocity.z;
+
                 }
                 if (checkCollisionSphereAABB(NW, indiBullet) || checkCollisionSphereAABB(SW, indiBullet))
                 {
+                   // slowBulletOnCollision(indiBullet.GetComponent<Bullet>());
                     indiBullet.GetComponent<Bullet>().velocity.x = -indiBullet.GetComponent<Bullet>().velocity.x;
-                }
 
+                }
             }
         }
-
     }
 }

@@ -20,7 +20,7 @@ public class RotateBarrel : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         yRotation -= mouseY;
-        yRotation = Mathf.Clamp(yRotation, -45.0f, 10.0f);
+        yRotation = Mathf.Clamp(yRotation, -45.0f, 5.0f);
 
         playerBody.transform.localRotation = Quaternion.Euler(yRotation, 0f, 0f);
     }
