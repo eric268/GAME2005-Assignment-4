@@ -20,6 +20,26 @@ public class PlayerCollision : MonoBehaviour
     {
         
     }
+    bool pointAABBCollision( GameObject point, GameObject obj1)
+    {
+        float pointX = point.transform.TransformPoint(Vector3.zero).x;
+        float pointY = point.transform.TransformPoint(Vector3.zero).y;
+        float pointZ = point.transform.TransformPoint(Vector3.zero).z;
+
+        float minX = obj1.transform.position.x - obj1.transform.localScale.x / 2f;
+        float maxX = obj1.transform.position.x + obj1.transform.localScale.x / 2f;
+        float minY = obj1.transform.position.y - obj1.transform.localScale.y / 2f;
+        float maxY = obj1.transform.position.y + obj1.transform.localScale.y / 2f;
+        float minZ = obj1.transform.position.z - obj1.transform.localScale.z / 2f;
+        float maxZ = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
+
+        return (pointX >= minX && pointX <= maxX) &&
+               (pointY >= minY && pointY <= maxY) &&
+               (pointZ >= minZ && pointZ <= maxZ);
+
+
+    }
+
     bool checkCollision(GameObject obj1, GameObject obj2)
     {
         GameObject tank = GameObject.Find("T95-1");
@@ -193,31 +213,56 @@ public class PlayerCollision : MonoBehaviour
         pos = tank.transform.position;
 
 
-        //if (checkCollision(tank, NW))
-        //{
-        //   // Debug.Log(" NW COLLIDING!");
-        //    pos.x = NW.transform.position.x + 23f;
-        //    tank.transform.position = pos;
-        //}
-        //if (checkCollisionSouth(tank, SW))
-        //{
-        //    //Debug.Log("SW COLLIDING!");
-        //    pos.x = SW.transform.position.x - 23f;
-        //    tank.transform.position = pos;
-        //}
-        //if (checkCollision(tank, EW))
-        //{
-        //    //Debug.Log("EW COLLIDING!");
-        //    pos.z = EW.transform.position.z - 22f;
-        //    tank.transform.position = pos;
-        //}
-        //if (checkCollisionWest(tank, WW))
-        //{
-        //    //Debug.Log("WW COLLIDING!");
-        //    pos.z = WW.transform.position.z + 22f;
-        //    tank.transform.position = pos;
-        //}
+        if (checkCollision(tank, NW))
+        {
+            // Debug.Log(" NW COLLIDING!");
+            pos.x = NW.transform.position.x + 23f;
+            tank.transform.position = pos;
+        }
+        if (checkCollisionSouth(tank, SW))
+        {
+            //Debug.Log("SW COLLIDING!");
+            pos.x = SW.transform.position.x - 23f;
+            tank.transform.position = pos;
+        }
+        if (checkCollision(tank, EW))
+        {
+            //Debug.Log("EW COLLIDING!");
+            pos.z = EW.transform.position.z - 22f;
+            tank.transform.position = pos;
+        }
+        if (checkCollisionWest(tank, WW))
+        {
+            //Debug.Log("WW COLLIDING!");
+            pos.z = WW.transform.position.z + 22f;
+            tank.transform.position = pos;
+        }
 
+        GameObject collider = GameObject.Find("T95-1").GetComponent<ColliderArray>().colliderArray[9];
+            if (pointAABBCollision(collider, NW))
+            {
+                // Debug.Log(" NW COLLIDING!");
+                pos.x = NW.transform.position.x + 23f;
+                tank.transform.position = pos;
+            }
+            if (pointAABBCollision(collider, SW))
+            {
+                //Debug.Log("SW COLLIDING!");
+                pos.x = SW.transform.position.x - 23f;
+                tank.transform.position = pos;
+            }
+            if (pointAABBCollision(collider, EW))
+            {
+                //Debug.Log("EW COLLIDING!");
+                pos.z = EW.transform.position.z - 22f;
+                tank.transform.position = pos;
+            }
+            if (pointAABBCollision(collider, WW))
+            {
+                //Debug.Log("WW COLLIDING!");
+                pos.z = WW.transform.position.z + 22f;
+                tank.transform.position = pos;
+            }
 
 
     }

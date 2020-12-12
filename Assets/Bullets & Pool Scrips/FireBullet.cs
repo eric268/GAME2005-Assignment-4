@@ -29,7 +29,7 @@ public class FireBullet : MonoBehaviour
             Bullet.transform.position = Bullet_Emitter.transform.position;
             Bullet.transform.rotation = Bullet_Emitter.transform.rotation;
 
-            Bullet.GetComponent<Bullet>().velocity = Bullet_Emitter.transform.forward * Bullet.GetComponent<Bullet>().speed;
+            Bullet.GetComponent<Bullet>().velocity = Bullet_Emitter.transform.forward * 0.6f;
 
 
             counter++;

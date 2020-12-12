@@ -151,7 +151,7 @@ public class BulletCollision : MonoBehaviour
                 //Debug.Log(indiBullet.GetComponent<Bullet>().velocity.magnitude);
                 if (checkCollisionSphereAABBRotated(ground, indiBullet) || checkCollisionSphereAABB(ceiling, indiBullet))
                 {
-                    Debug.Log("COLLIDING!!!\n");
+                    //Debug.Log("COLLIDING!!!\n");
                     //slowBulletOnCollision(indiBullet.GetComponent<Bullet>());
                     indiBullet.GetComponent<Bullet>().velocity.y = -indiBullet.GetComponent<Bullet>().velocity.y;
 
