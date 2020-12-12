@@ -55,16 +55,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Box Stuff\BoxCollision.cs" />
-     <Compile Include="Assets\Box Stuff\BoxGeneration.cs" />
-     <Compile Include="Assets\Box Stuff\BoxVariables.cs" />
+     <Compile Include="Assets\Box Scripts\BoxCollision.cs" />
+     <Compile Include="Assets\Box Scripts\BoxGeneration.cs" />
+     <Compile Include="Assets\Box Scripts\BoxVariables.cs" />
      <Compile Include="Assets\Bullets &amp; Pool Scrips\Bullet.cs" />
      <Compile Include="Assets\Bullets &amp; Pool Scrips\BulletCollision.cs" />
      <Compile Include="Assets\Bullets &amp; Pool Scrips\BulletPool.cs" />
      <Compile Include="Assets\Bullets &amp; Pool Scrips\FireBullet.cs" />
+     <Compile Include="Assets\Tank Scrips\ColliderArray.cs" />
      <Compile Include="Assets\Tank Scrips\MouseLook.cs" />
      <Compile Include="Assets\Tank Scrips\PlayerCollision.cs" />
      <Compile Include="Assets\Tank Scrips\PlayerMovement.cs" />
+     <Compile Include="Assets\Tank Scrips\PlayerVariables.cs" />
      <Compile Include="Assets\Tank Scrips\RotateBarrel.cs" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

@@ -13,6 +13,7 @@ public class BulletCollision : MonoBehaviour
     public float speed = 0.1f;
     public GameObject Bullet;
     public GameObject[] boxArray;
+
     //bool debug = false;
 
     void instatiateValues()

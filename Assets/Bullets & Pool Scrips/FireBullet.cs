@@ -31,6 +31,7 @@ public class FireBullet : MonoBehaviour
 
             Bullet.GetComponent<Bullet>().velocity = Bullet_Emitter.transform.forward * Bullet.GetComponent<Bullet>().speed;
 
+
             counter++;
             if (counter >=30)
             {

@@ -14,7 +14,7 @@ using UnityEngine;
 public class PlayerCollision : MonoBehaviour
 {
     Vector3 pos;
-    bool debug = false;
+   // bool debug = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -159,17 +159,17 @@ public class PlayerCollision : MonoBehaviour
         float minZ2 = obj2.transform.position.z - obj2.transform.localScale.z / 2f;
         float maxZ2 = obj2.transform.position.z + obj2.transform.localScale.z / 2f;
 
-        if (!debug)
-        {
-            Debug.Log("Min X: " + minX1);
-            Debug.Log("Max X: " + maxX1);
-            Debug.Log("Min Y: " + minY1);
-            Debug.Log("Max Y: " + maxY1);
-            Debug.Log("Min Z: " + minZ1);
-            Debug.Log("Max Z: " + maxZ1);
-            Debug.Log("Angle: " + angle);
-            debug = true;
-        }
+        //if (!debug)
+        //{
+        //    Debug.Log("Min X: " + minX1);
+        //    Debug.Log("Max X: " + maxX1);
+        //    Debug.Log("Min Y: " + minY1);
+        //    Debug.Log("Max Y: " + maxY1);
+        //    Debug.Log("Min Z: " + minZ1);
+        //    Debug.Log("Max Z: " + maxZ1);
+        //    Debug.Log("Angle: " + angle);
+        //    debug = true;
+        //}
 
         return (minX1 <= maxX2 && maxX1 >= minX2) &&
                (minY1 <= maxY2 && maxY1 >= minY2) &&
@@ -183,7 +183,7 @@ public class PlayerCollision : MonoBehaviour
 
         if (Input.GetKeyDown("space"))
         {
-            debug = false;
+            //debug = false;
         }
         GameObject tank = GameObject.Find("T95-1");
         GameObject NW = GameObject.Find("NorthWall");
@@ -193,30 +193,32 @@ public class PlayerCollision : MonoBehaviour
         pos = tank.transform.position;
 
 
-        if (checkCollision(tank, NW))
-        {
-            Debug.Log(" NW COLLIDING!");
-            pos.x = NW.transform.position.x + 23f;
-            tank.transform.position = pos;
-        }
-        if (checkCollisionSouth(tank, SW))
-        {
-            Debug.Log("SW COLLIDING!");
-            pos.x = SW.transform.position.x - 23f;
-            tank.transform.position = pos;
-        }
-        if (checkCollision(tank, EW))
-        {
-            Debug.Log("EW COLLIDING!");
-            pos.z = EW.transform.position.z - 22f;
-            tank.transform.position = pos;
-        }
-        if (checkCollisionWest(tank, WW))
-        {
-            Debug.Log("WW COLLIDING!");
-            pos.z = WW.transform.position.z + 22f;
-            tank.transform.position = pos;
-        }
+        //if (checkCollision(tank, NW))
+        //{
+        //   // Debug.Log(" NW COLLIDING!");
+        //    pos.x = NW.transform.position.x + 23f;
+        //    tank.transform.position = pos;
+        //}
+        //if (checkCollisionSouth(tank, SW))
+        //{
+        //    //Debug.Log("SW COLLIDING!");
+        //    pos.x = SW.transform.position.x - 23f;
+        //    tank.transform.position = pos;
+        //}
+        //if (checkCollision(tank, EW))
+        //{
+        //    //Debug.Log("EW COLLIDING!");
+        //    pos.z = EW.transform.position.z - 22f;
+        //    tank.transform.position = pos;
+        //}
+        //if (checkCollisionWest(tank, WW))
+        //{
+        //    //Debug.Log("WW COLLIDING!");
+        //    pos.z = WW.transform.position.z + 22f;
+        //    tank.transform.position = pos;
+        //}
+
+
 
     }
 }
