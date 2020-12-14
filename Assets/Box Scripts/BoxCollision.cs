@@ -9,16 +9,17 @@ public enum planeDirection
     Y_AXIS_POSITIVE,
     Y_AXIS_NEGATIVE,
     Z_AXIS_POSITIVE,
-    Z_AXIS_NEGATIVE
+    Z_AXIS_NEGATIVE,
+     NONE
 }
 public class BoxCollision : MonoBehaviour
 {
     Vector3 pos;
-    int counter = 0;
+    int counter;
     // Start is called before the first frame update
     void Start()
     {
-
+        counter = 0;
     }
     bool pointAABBCollision(GameObject obj1, GameObject point)
     {
@@ -426,7 +427,6 @@ public class BoxCollision : MonoBehaviour
                     if (!checkCollisionBottomYAxis(box, box2))
                     {
                         box.GetComponent<BoxVariables>().onGround = false;
-                        counter = 0;
                     }
                     if (checkCollisionBottomYAxis(box, box2))
                     {
@@ -435,33 +435,29 @@ public class BoxCollision : MonoBehaviour
                         box.GetComponent<BoxVariables>().acceleration.y = 0f;
                         box.GetComponent<BoxVariables>().onGround = true;
                     }
-                    //else if (checkCollisionLeftXAxis(box, box2))
-                    //{
-                    //    offsetCollision(box2, box, planeDirection.X_AXIS_NEGATIVE);
-                    //}
-                    //else if (checkCollisionRightXAxis(box, box2))
-                    //{
-                    //    offsetCollision(box2, box, planeDirection.X_AXIS_POSITIVE);
-                    //}
-                    //if (checkCollisionFrontZAxis(box, box2))
-                    //{
-                    //    offsetCollision(box2, box, planeDirection.Z_AXIS_NEGATIVE);
-                    //}
-                    //else if (checkCollisionBackZAxis(box, box2))
-                    //{
-                    //    offsetCollision(box2, box, planeDirection.Z_AXIS_POSITIVE);
-                    //}
-
-
-
-
-
-
+                    if (box.GetComponent<BoxVariables>().onGround && box2.GetComponent<BoxVariables>().onGround)
+                    {
+                        if (checkCollisionLeftXAxis(box, box2))
+                        {
+                            offsetCollision(box2, box, planeDirection.X_AXIS_NEGATIVE);
+                        }
+                        else if (checkCollisionRightXAxis(box, box2))
+                        {
+                            offsetCollision(box2, box, planeDirection.X_AXIS_POSITIVE);
+                        }
+                        if (checkCollisionFrontZAxis(box, box2))
+                        {
+                            offsetCollision(box2, box, planeDirection.Z_AXIS_NEGATIVE);
+                        }
+                        else if (checkCollisionBackZAxis(box, box2))
+                        {
+                            offsetCollision(box2, box, planeDirection.Z_AXIS_POSITIVE);
+                        }
+                    }
 
                 }
             }
         }
-        counter++;
 
     }
 
@@ -561,30 +557,105 @@ public class BoxCollision : MonoBehaviour
         //Debug.Log("Total momentum: " + totalMomentum);
         //Debug.Log("Total Mass: " + totalWeight);
         box.GetComponent<BoxVariables>().velocity = bullet.GetComponent<Bullet>().momentum/ box.GetComponent<BoxVariables>().weight;
-        Debug.Log(box.GetComponent<BoxVariables>().velocity);
+        //Debug.Log(box.GetComponent<BoxVariables>().velocity);
     }
+    planeDirection findSideOfCollision(Vector3 pos)
+    {
+        planeDirection dir;
+        float x = Mathf.Abs(pos.x);
+        float y = Mathf.Abs(pos.y);
+        float z = Mathf.Abs(pos.z);
 
+        if (x > y && x > z)
+        {
+            if (pos.x > 0)
+            {
+                dir = planeDirection.X_AXIS_NEGATIVE;
+            }
+            else
+            {
+                dir = planeDirection.X_AXIS_POSITIVE;
+            }
+        }
+        else if (y > x && y > z)
+        {
+            if (pos.y > 0)
+            {
+                dir = planeDirection.Y_AXIS_POSITIVE;
+            }
+            else
+                dir = planeDirection.Y_AXIS_NEGATIVE;
+        }
+        else
+        {
+            if (pos.z > 0)
+            {
+                dir = planeDirection.Z_AXIS_NEGATIVE;
+            }
+            else
+                dir = planeDirection.Z_AXIS_POSITIVE;
+        }
+
+
+        return dir;
+    }
     void checkCollisionBullets()
     {
-        for (int i=0; i < 30; i++)
+        int bulletPoolSize = GameObject.Find("Ground").GetComponent<BulletPool>().numBullets;
+        for (int i=0; i < bulletPoolSize; i++)
         {
-            GameObject individualBullet = GameObject.Find("Ground").GetComponent<BulletPool>().bulletPool[i];
-            if (individualBullet.GetComponent<Bullet>().active)
+            GameObject indiBullet = GameObject.Find("Ground").GetComponent<BulletPool>().bulletPool[i];
+            GameObject collider = GameObject.Find("Ground");
+           
+            if (indiBullet.GetComponent<Bullet>().active)
             {
                 for(int j=0; j<6;j++)
                 {
-                    GameObject individualBox = GameObject.Find("Ground").GetComponent<BoxGeneration>().boxArray[j];
+                     GameObject individualBox = GameObject.Find("Ground").GetComponent<BoxGeneration>().boxArray[j];
+                    if (CollisionManager.checkCollisionSphereAABB(individualBox, indiBullet))
+                    {
+                        planeDirection collisionDirection = findSideOfCollision(individualBox.transform.InverseTransformPoint(indiBullet.transform.position));
+                        if (collisionDirection == planeDirection.X_AXIS_POSITIVE)
+                        {
+                            Debug.Log("Collding X Positive");
+                            updateBoxVelocityBulletCollision(individualBox, indiBullet);
+                            collider.GetComponent<BulletCollision>().offsetBullet(indiBullet, individualBox, planeDirection.X_AXIS_POSITIVE);
+                            indiBullet.GetComponent<Bullet>().velocity.x = -indiBullet.GetComponent<Bullet>().velocity.x;
+                            collider.GetComponent<BulletCollision>().slowBulletOnCollision(indiBullet);
+                        }
+                        else if (collisionDirection == planeDirection.X_AXIS_NEGATIVE)
+                        {
+                            Debug.Log("Collding X Negative");
+                            updateBoxVelocityBulletCollision(individualBox, indiBullet);
+                            collider.GetComponent<BulletCollision>().offsetBullet(indiBullet, individualBox, planeDirection.X_AXIS_NEGATIVE);
+                            indiBullet.GetComponent<Bullet>().velocity.x = -indiBullet.GetComponent<Bullet>().velocity.x;
+                            collider.GetComponent<BulletCollision>().slowBulletOnCollision(indiBullet);
+                        }
 
-                    if (checkCollisionLeftXAxis(individualBox, individualBullet) || checkCollisionRightXAxis(individualBox, individualBullet))
-                    {
-                        updateBoxVelocityBulletCollision(individualBox, individualBullet);
-                        individualBullet.GetComponent<Bullet>().velocity.x = -individualBullet.GetComponent<Bullet>().velocity.x;
-                    }
-                    if (checkCollisionFrontZAxis(individualBox, individualBullet) || checkCollisionBackZAxis(individualBox, individualBullet))
-                    {
-                        updateBoxVelocityBulletCollision(individualBox, individualBullet);
-                        individualBullet.GetComponent<Bullet>().velocity.z = -individualBullet.GetComponent<Bullet>().velocity.z;
-                        //individualBullet.GetComponent<BoxVariables>().velocity.x = -individualBullet.GetComponent<BoxVariables>().velocity.x;
+                        else if (collisionDirection == planeDirection.Z_AXIS_POSITIVE)
+                        {
+
+                            updateBoxVelocityBulletCollision(individualBox, indiBullet);
+                            collider.GetComponent<BulletCollision>().offsetBullet(indiBullet, individualBox, planeDirection.Z_AXIS_POSITIVE);
+                            indiBullet.GetComponent<Bullet>().velocity.z = -indiBullet.GetComponent<Bullet>().velocity.z;
+                            collider.GetComponent<BulletCollision>().slowBulletOnCollision(indiBullet);
+
+                        }
+                        else if (collisionDirection == planeDirection.Z_AXIS_NEGATIVE)
+                        {
+                            updateBoxVelocityBulletCollision(individualBox, indiBullet);
+                            collider.GetComponent<BulletCollision>().offsetBullet(indiBullet, individualBox, planeDirection.Z_AXIS_NEGATIVE);
+                            indiBullet.GetComponent<Bullet>().velocity.z = -indiBullet.GetComponent<Bullet>().velocity.z;
+                            collider.GetComponent<BulletCollision>().slowBulletOnCollision(indiBullet);
+                        }
+                        else //Collision on bottom of box
+                        {
+                            updateBoxVelocityBulletCollision(individualBox, indiBullet);
+                            collider.GetComponent<BulletCollision>().offsetBullet(indiBullet, individualBox, planeDirection.Y_AXIS_NEGATIVE);
+                            indiBullet.GetComponent<Bullet>().velocity.y = -indiBullet.GetComponent<Bullet>().velocity.y;
+                            collider.GetComponent<BulletCollision>().slowBulletOnCollision(indiBullet);
+                        }
+
                     }
                 }
             }

@@ -12,6 +12,11 @@ public class CollisionManager : MonoBehaviour
         
     }
 
+     public static float distance(Vector3 obj1, Vector3 obj2)
+    {
+        return Mathf.Sqrt((obj2.x - obj1.x) * (obj2.x - obj1.x) + (obj2.y - obj1.y) * (obj2.y - obj1.y) + (obj2.z - obj1.z) * (obj2.z - obj1.z));
+    }
+
     static Vector3 calculateNormalVec(Vector3 A, Vector3 B, Vector3 C)
     {
         Vector3 AB = B - A;
@@ -23,13 +28,37 @@ public class CollisionManager : MonoBehaviour
         return mNormal.normalized;
     }
 
-    bool planeAABBCollision(GameObject plane, GameObject box)
+    static public bool planeSphereCollision(GameObject plane, GameObject sphere)
     {
+        Vector3 A = new Vector3(plane.transform.position.x, plane.transform.position.y - plane.transform.localScale.y, plane.transform.position.z - plane.transform.localScale.z);
+        Vector3 B = new Vector3(plane.transform.position.x, plane.transform.position.y + plane.transform.localScale.y, plane.transform.position.z - plane.transform.localScale.z);
+        Vector3 C = new Vector3(plane.transform.position.x, plane.transform.position.y - plane.transform.localScale.y, plane.transform.position.z + plane.transform.localScale.z);
+        Vector3 planeN = calculateNormalVec(A, B, C);
 
+        //float distance = Vector3.Dot((sphere.transform.position - A), planeN);
+
+        float yMin = plane.transform.position.y - plane.transform.localScale.y / 2;
+        float yMax = plane.transform.position.y + plane.transform.localScale.y / 2;
+
+        float zMin = plane.transform.position.z - plane.transform.localScale.z / 2;
+        float zMax = plane.transform.position.z + plane.transform.localScale.z / 2;
+
+        float xMin = plane.transform.position.x + plane.transform.localScale.x / 2;
+        float xMax = plane.transform.position.x + plane.transform.localScale.x / 2 +0.25f;
+        //Debug.LogError("Distance: " + distance);
+
+        if ((sphere.transform.position.y <= yMax && sphere.transform.position.y >= yMin) &&
+            sphere.transform.position.z <= yMax && sphere.transform.position.z >= yMin &&
+            (sphere.transform.position.x <= xMax && sphere.transform.position.x >= xMin))
+                
+        {
+            return true;
+        }
 
         return false;
     }
-    bool checkCollisionSphereAABB(GameObject obj1, GameObject obj2)
+
+    static public bool checkCollisionSphereAABB(GameObject obj1, GameObject obj2)
     {
         //Obj1 Cube
         //Obj2 Sphere
@@ -40,6 +69,10 @@ public class CollisionManager : MonoBehaviour
         float maxY = obj1.transform.position.y + obj1.transform.localScale.y / 2f;
         float minZ = obj1.transform.position.z - obj1.transform.localScale.z / 2f;
         float maxZ = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
+
+
+
+
 
         //if (!debug)
         //{
@@ -56,7 +89,7 @@ public class CollisionManager : MonoBehaviour
         float sphereY = obj2.transform.position.y;
         float sphereZ = obj2.transform.position.z;
 
-        float radius = obj2.transform.localScale.z;
+        float radius = obj2.transform.localScale.x;
 
 
         float x = Mathf.Max(minX, Mathf.Min(sphereX, maxX));

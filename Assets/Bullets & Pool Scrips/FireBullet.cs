@@ -29,11 +29,12 @@ public class FireBullet : MonoBehaviour
             Bullet.transform.position = Bullet_Emitter.transform.position;
             Bullet.transform.rotation = Bullet_Emitter.transform.rotation;
 
-            Bullet.GetComponent<Bullet>().velocity = Bullet_Emitter.transform.forward * 0.6f;
+            Bullet.GetComponent<Bullet>().velocity = Bullet_Emitter.transform.forward * Bullet.GetComponent<Bullet>().speed;
 
 
             counter++;
-            if (counter >=30)
+            int bulletPoolSize = indivBullet.GetComponent<BulletPool>().numBullets;
+            if (counter >= bulletPoolSize)
             {
                 counter = 0;
             }

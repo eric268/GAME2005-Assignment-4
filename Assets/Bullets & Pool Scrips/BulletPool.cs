@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BulletPool : MonoBehaviour
 {
-   public static int numBullets = 30;
+   public  int numBullets = 100;
    int counter;
 
     public GameObject[] bulletPool;
