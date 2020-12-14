@@ -10,9 +10,9 @@ public class BoxVariables : MonoBehaviour
     public Vector3 pos;
     public float weight;
     public float gravity;
-    public bool collidingTank = false;
-    public bool onGround = false;
-    public bool collidingOtherBox = false;
+    public bool collidingTank;
+    public bool onGround;
+    public bool collidingOtherBox;
     public float GravityForce = 0f;
     public float FrictionForce =0f;
     public float coefficientFriction;
@@ -30,6 +30,9 @@ public class BoxVariables : MonoBehaviour
         coefficientFriction = 0.1f;
         weight = 5f;
         gravity = -9.81f;
+        collidingTank = false;
+        onGround = false;
+        collidingOtherBox = false;
 
     }
 
@@ -44,7 +47,7 @@ public class BoxVariables : MonoBehaviour
         {
             velocity = Vector3.zero;
         }
-        if (!onGround)
+        if (!onGround || !collidingOtherBox)
         {
         acceleration.y = gravity;
         }

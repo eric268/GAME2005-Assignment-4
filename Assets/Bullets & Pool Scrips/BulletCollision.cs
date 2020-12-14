@@ -130,6 +130,7 @@ public class BulletCollision : MonoBehaviour
         bullet.GetComponent<Bullet>().velocity -= slowAmount;
         if (bullet.GetComponent<Bullet>().velocity.magnitude <= 0.1f)
         {
+            Debug.Log(Bullet.name + " deactivated");
             bullet.GetComponent<Bullet>().active = false;
             //Debug.LogError(bullet.name +  " Despawned");
         }
