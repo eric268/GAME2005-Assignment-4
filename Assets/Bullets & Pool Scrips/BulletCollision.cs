@@ -6,7 +6,6 @@ public class BulletCollision : MonoBehaviour
 {
     //Variables
 
-    public float gravity = -1.8f;
     public Vector3 velocity;
     public Vector3 acceleration;
     public int amIWorkign = 0;
@@ -29,7 +28,7 @@ public class BulletCollision : MonoBehaviour
 
         float frameRate = Time.deltaTime;
         instatiateValues();
-        acceleration.y = gravity * frameRate;
+        //acceleration.y = gravity * frameRate;
        // Debug.LogWarning("Acceleration: " + acceleration);
        // Debug.LogWarning("Frame Rate: " + frameRate);
 

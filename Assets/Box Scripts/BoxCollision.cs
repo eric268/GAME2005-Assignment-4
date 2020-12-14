@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum planeDirection
+{
+    X_AXIS_POSITIVE,
+    X_AXIS_NEGATIVE,
+    Y_AXIS_POSITIVE,
+    Y_AXIS_NEGATIVE,
+    Z_AXIS_POSITIVE,
+    Z_AXIS_NEGATIVE
+}
 public class BoxCollision : MonoBehaviour
 {
     Vector3 pos;
@@ -108,21 +117,6 @@ public class BoxCollision : MonoBehaviour
         //Debug.Log("Total Mass: " + totalMass);
 
     }
-
-    void safteyNetForBoxYPos()
-    {
-        for (int i = 0; i < 6; i++)
-        {
-            GameObject box = GameObject.Find("Ground").GetComponent<BoxGeneration>().boxArray[i];
-            float yMin = 4.8f;
-            Vector3 pos = box.transform.position;
-            if (pos.y <= yMin)
-            {
-                pos.y = yMin;
-            }
-            box.transform.position = pos;
-        }
-    }
     void updateBoxVelocityBarrelCollision(GameObject box, GameObject tank)
     {
 
@@ -139,12 +133,62 @@ public class BoxCollision : MonoBehaviour
 
     }
 
+    bool drawRayCast(GameObject obj1, GameObject obj2, planeDirection dir)
+    {
+        float minX1 = obj1.transform.position.x;
+        float maxX1 = obj1.transform.position.x;
+        float minY1 = obj1.transform.position.y;
+        float maxY1 = obj1.transform.position.y;
+        float minZ1 = obj1.transform.position.z;
+        float maxZ1 = obj1.transform.position.z;
+
+        if (dir == planeDirection.Y_AXIS_NEGATIVE)
+        {
+            minY1 = obj1.transform.position.y - obj1.transform.localScale.y/2;
+        }
+        else if (dir == planeDirection.X_AXIS_NEGATIVE)
+        {
+            minX1 = obj1.transform.position.x - obj1.transform.localScale.x / 2;
+        }
+        else if (dir == planeDirection.X_AXIS_POSITIVE)
+        {
+            maxX1 = obj1.transform.position.x + obj1.transform.localScale.x / 2;
+        }
+        else if (dir == planeDirection.Z_AXIS_NEGATIVE)
+        {
+            minZ1 = obj1.transform.position.x - obj1.transform.localScale.x / 2;
+        }
+        else
+        {
+            maxZ1 = obj1.transform.position.z - obj1.transform.localScale.z / 2;
+        }
+
+
+
+
+
+        Vector3 pos1 = new Vector3(minX1, minY1, minZ1);
+        Vector3 pos2 = new Vector3(maxX1, maxY1, maxZ1);
+
+        Debug.DrawLine(pos1, pos2);
+
+        float minX2 = obj2.transform.position.x - obj2.transform.localScale.y / 2f;
+        float maxX2 = obj2.transform.position.x + obj2.transform.localScale.y / 2f;
+        float minY2 = obj2.transform.position.y - obj2.transform.localScale.x / 2f;
+        float maxY2 = obj2.transform.position.y + obj2.transform.localScale.x / 2f;
+        float minZ2 = obj2.transform.position.z - obj2.transform.localScale.z / 2f;
+        float maxZ2 = obj2.transform.position.z + obj2.transform.localScale.z / 2f;
+
+        return (minX1 <= maxX2 && maxX1 >= minX2) &&
+               (minY1 <= maxY2 && maxY1 >= minY2) &&
+               (minZ1 <= maxZ2 && maxZ1 >= minZ2);
+    }
     bool checkCollisionBottomYAxis(GameObject obj1, GameObject obj2)
     {
         //This one has to be the plane being checked 
         float minX1 = obj1.transform.position.x - obj1.transform.localScale.y / 2f;
-        float maxX1 = obj1.transform.position.x + obj1.transform.localScale.y / 2f - 0.15f;
-        float minY1 = obj1.transform.position.y - obj1.transform.localScale.x / 2f;
+        float maxX1 = obj1.transform.position.x + obj1.transform.localScale.y / 2f;
+        float minY1 = obj1.transform.position.y - obj1.transform.localScale.x / 2f - 0.15f;
         float maxY1 = obj1.transform.position.y - obj1.transform.localScale.x / 2f;
         float minZ1 = obj1.transform.position.z - obj1.transform.localScale.z / 2f;
         float maxZ1 = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
@@ -170,13 +214,15 @@ public class BoxCollision : MonoBehaviour
                (minY1 <= maxY2 && maxY1 >= minY2) &&
                (minZ1 <= maxZ2 && maxZ1 >= minZ2);
     }
+
+
     bool checkCollisionTopYAxis(GameObject obj1, GameObject obj2)
     {
         //This one has to be the plane being checked 
-        float minX1 = obj1.transform.position.x + obj1.transform.localScale.y / 2f;
-        float maxX1 = obj1.transform.position.x + obj1.transform.localScale.y / 2f + 0.15f;
-        float minY1 = obj1.transform.position.y - obj1.transform.localScale.x / 2f;
-        float maxY1 = obj1.transform.position.y - obj1.transform.localScale.x / 2f;
+        float minX1 = obj1.transform.position.x - obj1.transform.localScale.y / 2f;
+        float maxX1 = obj1.transform.position.x + obj1.transform.localScale.y / 2f;
+        float minY1 = obj1.transform.position.y + obj1.transform.localScale.x / 2f;
+        float maxY1 = obj1.transform.position.y + obj1.transform.localScale.x / 2f + 0.15f;
         float minZ1 = obj1.transform.position.z - obj1.transform.localScale.z / 2f;
         float maxZ1 = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
 
@@ -205,12 +251,16 @@ public class BoxCollision : MonoBehaviour
     {
 
         //This one has to be the plane being checked 
-        float minX1 = obj1.transform.position.x - obj1.transform.localScale.y / 2f;
-        float maxX1 = obj1.transform.position.x - obj1.transform.localScale.y / 2f + 0.15f;
+        float minX1 = obj1.transform.position.x - obj1.transform.localScale.y / 2f - 0.15f;
+        float maxX1 = obj1.transform.position.x - obj1.transform.localScale.y / 2f;
         float minY1 = obj1.transform.position.y - obj1.transform.localScale.x / 2f;
         float maxY1 = obj1.transform.position.y + obj1.transform.localScale.x / 2f;
         float minZ1 = obj1.transform.position.z - obj1.transform.localScale.z / 2f;
         float maxZ1 = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
+
+        //Vector3 pos1 = new Vector3(minX1, minY1, minZ1);
+        //Vector3 pos2 = new Vector3(maxX1, maxY1, maxZ1);
+        //Debug.DrawLine(pos1, pos2);
 
         float minX2 = obj2.transform.position.x - obj2.transform.localScale.x / 2f;
         float maxX2 = obj2.transform.position.x + obj2.transform.localScale.x / 2f;
@@ -227,19 +277,24 @@ public class BoxCollision : MonoBehaviour
     bool checkCollisionRightXAxis(GameObject obj1, GameObject obj2)
     {
         //This one has to be the plane being checked 
-        float minX1 = obj1.transform.position.x + obj1.transform.localScale.x / 2f - 0.15f;
-        float maxX1 = obj1.transform.position.x + obj1.transform.localScale.x / 2f;
-        float minY1 = obj1.transform.position.y - obj1.transform.localScale.y / 2f;
-        float maxY1 = obj1.transform.position.y + obj1.transform.localScale.y / 2f;
+        float minX1 = obj1.transform.position.x + obj1.transform.localScale.y / 2f;
+        float maxX1 = obj1.transform.position.x + obj1.transform.localScale.y / 2f +0.15f;
+        float minY1 = obj1.transform.position.y - obj1.transform.localScale.x / 2f;
+        float maxY1 = obj1.transform.position.y + obj1.transform.localScale.x / 2f;
         float minZ1 = obj1.transform.position.z - obj1.transform.localScale.z / 2f;
         float maxZ1 = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
 
-        float minX2 = obj2.transform.position.x - obj2.transform.localScale.y / 2f;
-        float maxX2 = obj2.transform.position.x + obj2.transform.localScale.y / 2f;
-        float minY2 = obj2.transform.position.y - obj2.transform.localScale.x / 2f;
-        float maxY2 = obj2.transform.position.y + obj2.transform.localScale.x / 2f;
+        //Vector3 pos1 = new Vector3(minX1, minY1, minZ1);
+        //Vector3 pos2 = new Vector3(maxX1, maxY1, maxZ1);
+        //Debug.DrawLine(pos1, pos2);
+
+        float minX2 = obj2.transform.position.x - obj2.transform.localScale.x / 2f;
+        float maxX2 = obj2.transform.position.x + obj2.transform.localScale.x / 2f;
+        float minY2 = obj2.transform.position.y - obj2.transform.localScale.y / 2f;
+        float maxY2 = obj2.transform.position.y + obj2.transform.localScale.y / 2f;
         float minZ2 = obj2.transform.position.z - obj2.transform.localScale.z / 2f;
         float maxZ2 = obj2.transform.position.z + obj2.transform.localScale.z / 2f;
+
 
         return (minX1 <= maxX2 && maxX1 >= minX2) &&
                (minY1 <= maxY2 && maxY1 >= minY2) &&
@@ -252,8 +307,8 @@ public class BoxCollision : MonoBehaviour
         float maxX1 = obj1.transform.position.x + obj1.transform.localScale.y / 2f;
         float minY1 = obj1.transform.position.y - obj1.transform.localScale.x / 2f;
         float maxY1 = obj1.transform.position.y + obj1.transform.localScale.x / 2f;
-        float minZ1 = obj1.transform.position.z - obj1.transform.localScale.z / 2f;
-        float maxZ1 = obj1.transform.position.z - obj1.transform.localScale.z / 2f + 0.15f;
+        float minZ1 = obj1.transform.position.z - obj1.transform.localScale.z / 2f - 0.15f;
+        float maxZ1 = obj1.transform.position.z - obj1.transform.localScale.z / 2f ;
 
         float minX2 = obj2.transform.position.x - obj2.transform.localScale.y / 2f;
         float maxX2 = obj2.transform.position.x + obj2.transform.localScale.y / 2f;
@@ -273,8 +328,8 @@ public class BoxCollision : MonoBehaviour
         float maxX1 = obj1.transform.position.x + obj1.transform.localScale.y / 2f;
         float minY1 = obj1.transform.position.y - obj1.transform.localScale.x / 2f;
         float maxY1 = obj1.transform.position.y + obj1.transform.localScale.x / 2f;
-        float minZ1 = obj1.transform.position.z + obj1.transform.localScale.z / 2f - 0.15f;
-        float maxZ1 = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
+        float minZ1 = obj1.transform.position.z + obj1.transform.localScale.z / 2f;
+        float maxZ1 = obj1.transform.position.z + obj1.transform.localScale.z / 2f + 0.15f;
 
         float minX2 = obj2.transform.position.x - obj2.transform.localScale.y / 2f;
         float maxX2 = obj2.transform.position.x + obj2.transform.localScale.y / 2f;
@@ -287,7 +342,63 @@ public class BoxCollision : MonoBehaviour
                (minY1 <= maxY2 && maxY1 >= minY2) &&
                (minZ1 <= maxZ2 && maxZ1 >= minZ2);
     }
+    void offsetCollision(GameObject obj1, GameObject obj2, planeDirection directionOffset)
+    {
+        Vector3 obj2Pos = obj2.transform.position;
+        float Min, Max, overlap;
 
+        if (directionOffset == planeDirection.Y_AXIS_POSITIVE)
+        {
+            if (obj1.name == "Ground")
+            {
+                Max = obj1.transform.position.y + obj1.transform.localScale.x / 2f;
+            }
+            else
+            {
+                Max = obj1.transform.position.y + obj1.transform.localScale.y / 2f;
+            }
+            Min = obj2.transform.position.y - obj2.transform.localScale.y / 2f;
+            overlap = Max - Min;
+            obj2Pos.y += overlap;
+            obj2.transform.position = obj2Pos;
+        }
+        if (directionOffset == planeDirection.X_AXIS_NEGATIVE)
+        {
+            Max = obj1.transform.position.x + 5f;
+            Min = obj2.transform.position.x - obj2.transform.localScale.x / 2f -0.15f;
+            overlap = Max - Min;
+            obj2Pos.x += overlap;
+            obj2.transform.position = obj2Pos;
+        }
+        if (directionOffset == planeDirection.X_AXIS_POSITIVE)
+        {
+            Min = obj1.transform.position.x - 5f;
+            Max = obj2.transform.position.x + obj2.transform.localScale.x / 2f - 0.3f;
+            overlap = Max - Min;
+            Debug.LogError(overlap);
+            obj2Pos.x += overlap;
+            obj2.transform.position = obj2Pos;
+        }
+        if (directionOffset == planeDirection.Z_AXIS_NEGATIVE)
+        {
+            Max = obj1.transform.position.z + 5f;
+            Min = obj2.transform.position.z - obj2.transform.localScale.z / 2f - 0.15f;
+            overlap = Max - Min;
+            //Debug.LogError(overlap);
+            obj2Pos.z += overlap;
+            obj2.transform.position = obj2Pos;
+        }
+        if (directionOffset == planeDirection.Z_AXIS_POSITIVE)
+        {
+            Min = obj1.transform.position.z - 5f;
+            Max = obj2.transform.position.z + obj2.transform.localScale.z / 2f - 0.3f;
+            overlap = Max - Min;
+            //Debug.LogError(overlap);
+            obj2Pos.z += overlap;
+            obj2.transform.position = obj2Pos;
+        }
+
+    }
     void checkCollisionWithGroundAndBoxes()
     {
         GameObject ground = GameObject.Find("Ground");
@@ -295,8 +406,9 @@ public class BoxCollision : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             GameObject box = GameObject.Find("Ground").GetComponent<BoxGeneration>().boxArray[i];
-            if (checkCollisionBottomYAxis(box, ground))
+            if (drawRayCast(box, ground, planeDirection.Y_AXIS_NEGATIVE))
             {
+                offsetCollision(ground, box, planeDirection.Y_AXIS_POSITIVE);
                 box.GetComponent<BoxVariables>().velocity.y = 0f;
                 box.GetComponent<BoxVariables>().acceleration.y = 0f;
                 box.GetComponent<BoxVariables>().onGround = true;
@@ -311,17 +423,41 @@ public class BoxCollision : MonoBehaviour
                 {
                     GameObject box2 = GameObject.Find("Ground").GetComponent<BoxGeneration>().boxArray[j];
 
-                    if (checkCollisionBottomYAxis(box, box2))
-                    {
-                        box.GetComponent<BoxVariables>().velocity.y = 0f;
-                        box.GetComponent<BoxVariables>().acceleration.y = 0f;
-                        box.GetComponent<BoxVariables>().onGround = true;
-                    }
-                    if (!checkCollisionBottomYAxis(box, box2) && counter >= 40)
+                    if (!checkCollisionBottomYAxis(box, box2))
                     {
                         box.GetComponent<BoxVariables>().onGround = false;
                         counter = 0;
                     }
+                    if (checkCollisionBottomYAxis(box, box2))
+                    {
+                        offsetCollision(box2, box, planeDirection.Y_AXIS_POSITIVE);
+                        box.GetComponent<BoxVariables>().velocity.y = 0f;
+                        box.GetComponent<BoxVariables>().acceleration.y = 0f;
+                        box.GetComponent<BoxVariables>().onGround = true;
+                    }
+                    //else if (checkCollisionLeftXAxis(box, box2))
+                    //{
+                    //    offsetCollision(box2, box, planeDirection.X_AXIS_NEGATIVE);
+                    //}
+                    //else if (checkCollisionRightXAxis(box, box2))
+                    //{
+                    //    offsetCollision(box2, box, planeDirection.X_AXIS_POSITIVE);
+                    //}
+                    //if (checkCollisionFrontZAxis(box, box2))
+                    //{
+                    //    offsetCollision(box2, box, planeDirection.Z_AXIS_NEGATIVE);
+                    //}
+                    //else if (checkCollisionBackZAxis(box, box2))
+                    //{
+                    //    offsetCollision(box2, box, planeDirection.Z_AXIS_POSITIVE);
+                    //}
+
+
+
+
+
+
+
                 }
             }
         }
@@ -382,33 +518,50 @@ public class BoxCollision : MonoBehaviour
             }
             for (int j = 0; j < 4; j++)
             {
-                if (checkCollisionLeftXAxis(box, wallArray[j]) || checkCollisionRightXAxis(box, wallArray[j]))
+                if (checkCollisionLeftXAxis(box, wallArray[j]))
                 {
+                    offsetCollision(wallArray[j], box, planeDirection.X_AXIS_NEGATIVE);
                     box.GetComponent<BoxVariables>().velocity.x = -box.GetComponent<BoxVariables>().velocity.x;
+                    Debug.Log(box.name + " collding X_AXIS");
                 }
-                if (checkCollisionFrontZAxis(box, wallArray[j]) || checkCollisionBackZAxis(box, wallArray[j]))
+                else if (checkCollisionRightXAxis(box, wallArray[j]))
                 {
+                    offsetCollision(wallArray[j], box, planeDirection.X_AXIS_POSITIVE);
+                    box.GetComponent<BoxVariables>().velocity.x = -box.GetComponent<BoxVariables>().velocity.x;
+                    Debug.Log(box.name + " collding X_AXIS positive!");
+                }
+                if (checkCollisionFrontZAxis(box, wallArray[j]))
+                {
+                    offsetCollision(wallArray[j], box, planeDirection.Z_AXIS_NEGATIVE);
                     box.GetComponent<BoxVariables>().velocity.z = -box.GetComponent<BoxVariables>().velocity.z;
-                    box.GetComponent<BoxVariables>().velocity.x = -box.GetComponent<BoxVariables>().velocity.x;
+                    //box.GetComponent<BoxVariables>().velocity.x = -box.GetComponent<BoxVariables>().velocity.x;
+                    Debug.Log(box.name + " collding Z_AXIS");
                 }
-
-
+                else if (checkCollisionBackZAxis(box, wallArray[j]))
+                {
+                    offsetCollision(wallArray[j], box, planeDirection.Z_AXIS_POSITIVE);
+                    box.GetComponent<BoxVariables>().velocity.z = -box.GetComponent<BoxVariables>().velocity.z;
+                    //box.GetComponent<BoxVariables>().velocity.x = -box.GetComponent<BoxVariables>().velocity.x;
+                    Debug.Log(box.name + " collding Z_AXIS");
+                }
             }
         }
 
     }
     void updateBoxVelocityBulletCollision(GameObject box, GameObject bullet)
     {
-        Vector3 totalMomentum = box.GetComponent<BoxVariables>().momentum + bullet.GetComponent<Bullet>().momentum * 200f;
-        float totalWeight = box.GetComponent<BoxVariables>().weight + bullet.GetComponent<Bullet>().weight;
+        //Vector3 totalMomentum = box.GetComponent<BoxVariables>().momentum + bullet.GetComponent<Bullet>().momentum*100f;
+        //float totalWeight = box.GetComponent<BoxVariables>().weight + bullet.GetComponent<Bullet>().weight;
 
-        Vector3 newVelocity = totalMomentum / totalWeight;
+        //Vector3 newVelocity = totalMomentum / totalWeight;
 
-        box.GetComponent<BoxVariables>().velocity = newVelocity;
+        //box.GetComponent<BoxVariables>().velocity = newVelocity;
 
-        Debug.Log("New Velocity: " + newVelocity);
-        Debug.Log("Total momentum: " + totalMomentum);
-        Debug.Log("Total Mass: " + totalWeight);
+        //Debug.Log("New Velocity: " + newVelocity);
+        //Debug.Log("Total momentum: " + totalMomentum);
+        //Debug.Log("Total Mass: " + totalWeight);
+        box.GetComponent<BoxVariables>().velocity = bullet.GetComponent<Bullet>().momentum/ box.GetComponent<BoxVariables>().weight;
+        Debug.Log(box.GetComponent<BoxVariables>().velocity);
     }
 
     void checkCollisionBullets()
@@ -444,7 +597,6 @@ public class BoxCollision : MonoBehaviour
         checkCollisionWithGroundAndBoxes();
         checkCollisionWithTank();
         checkCollisionWithWalls();
-        safteyNetForBoxYPos();
         checkCollisionBullets(); 
     }
 

@@ -19,9 +19,9 @@ public class BoxGeneration : MonoBehaviour
         boxArray[0].transform.position = new Vector3(118f, 14.8f, 10f);
         boxArray[1].transform.position = new Vector3(122.61f, 14.8f, 16.12f);
         boxArray[2].transform.position = new Vector3(128.54f, 14.8f, 22f);
-        boxArray[3].transform.position = new Vector3(120.85f, 26.9f, 12.85f);
-        boxArray[4].transform.position = new Vector3(125.16f, 26.82f, 20.23f);
-        boxArray[5].transform.position = new Vector3(122.47f, 38.6f, 17.48f);
+        boxArray[3].transform.position = new Vector3(120.85f, 28.9f, 12.85f);
+        boxArray[4].transform.position = new Vector3(125.16f, 28.82f, 20.23f);
+        boxArray[5].transform.position = new Vector3(122.47f, 40.6f, 17.48f);
     }
 
     // Update is called once per frame

@@ -62,6 +62,7 @@
      <Compile Include="Assets\Bullets &amp; Pool Scrips\BulletCollision.cs" />
      <Compile Include="Assets\Bullets &amp; Pool Scrips\BulletPool.cs" />
      <Compile Include="Assets\Bullets &amp; Pool Scrips\FireBullet.cs" />
+     <Compile Include="Assets\CollisionManager.cs" />
      <Compile Include="Assets\Tank Scrips\ColliderArray.cs" />
      <Compile Include="Assets\Tank Scrips\MouseLook.cs" />
      <Compile Include="Assets\Tank Scrips\PlayerCollision.cs" />

@@ -8,14 +8,14 @@ public class BoxVariables : MonoBehaviour
     public Vector3 acceleration;
     public Vector3 momentum;
     public Vector3 pos;
-    public float weight = 1f;
-    public float gravity = -9.81f;
+    public float weight;
+    public float gravity;
     public bool collidingTank = false;
     public bool onGround = false;
     public bool collidingOtherBox = false;
     public float GravityForce = 0f;
     public float FrictionForce =0f;
-    public float coefficientFriction = 0.1f;
+    public float coefficientFriction;
     public float netForce =0f;
     public float decceleration = 0f;
     public bool collisionJustOccured = false;
@@ -27,14 +27,16 @@ public class BoxVariables : MonoBehaviour
         velocity = new Vector3(0f, 0f, 0f);
         acceleration = new Vector3(0f, 0f, 0f);
         pos = new Vector3(0f, 0f, 0f);
-
+        coefficientFriction = 0.1f;
+        weight = 5f;
+        gravity = -9.81f;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (velocity.magnitude >= 0.5f)
+        if (velocity.magnitude >= 0.1f)
         {
             acceleration = velocity.normalized * coefficientFriction * gravity;
         }
@@ -56,7 +58,7 @@ public class BoxVariables : MonoBehaviour
         velocity += acceleration;
 
 
-        pos = transform.position;
+         pos = transform.position;
             pos += velocity * Time.deltaTime;
            transform.position = pos;
             //Debug.Log(indiviBox.GetComponent<BoxVariables>().velocity);

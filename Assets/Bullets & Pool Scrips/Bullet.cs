@@ -7,15 +7,16 @@ public class Bullet : MonoBehaviour
     public Vector3 velocity;
     public Vector3 inactiveLocation;
     public bool active = false;
-    public float weight = 20f;
+    public float weight;
     public  Vector3 momentum;
-
-    public float speed = 1.6f;
+    public float speed;
 
     // Start is called before the first frame update
     void Start()
     {
         velocity = new Vector3(0.0f, 0.0f, 0.0f);
+        weight = 40f;
+        speed = 2f;
         inactiveLocation = new Vector3(-10000f, -10000f, -10000f);
         this.transform.position = inactiveLocation;
 
