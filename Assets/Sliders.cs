@@ -6,18 +6,22 @@ public class Sliders : MonoBehaviour
 {
     public void adjustMass(float newWeight)
     {
-        float Sliders = GameObject.Find("BoxPrefab").GetComponent<BoxVariables>().weight;
+
         //float weight = 5f; 
-        Sliders = newWeight;
-        Debug.Log("Weight");
+        for (int i = 0; i < 6; i++)
+        {
+            GameObject.Find("Ground").GetComponent<BoxGeneration>().boxArray[i].GetComponent<BoxVariables>().weight = newWeight;
+        }
+
         //return newWeight;
     }
 
     public void adjustFriction(float newFriction)
     {
-        float coefficientFriction = 0.1f;
-        coefficientFriction = newFriction;
-        //return newFriction;
+        for (int i = 0; i < 6; i++)
+        {
+            GameObject.Find("Ground").GetComponent<BoxGeneration>().boxArray[i].GetComponent<BoxVariables>().coefficientFriction = newFriction;
+        }
     }
 
 }

@@ -74,6 +74,7 @@
     <Compile Include="Assets\CollisionManager.cs" />
     <Compile Include="Assets\MainMenu.cs" />
     <Compile Include="Assets\PlaySceneUI.cs" />
+    <Compile Include="Assets\Sliders.cs" />
     <Compile Include="Assets\Tank Scrips\ColliderArray.cs" />
     <Compile Include="Assets\Tank Scrips\MouseLook.cs" />
     <Compile Include="Assets\Tank Scrips\PlayerCollision.cs" />
