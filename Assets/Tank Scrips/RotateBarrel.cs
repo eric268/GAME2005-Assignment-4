@@ -17,11 +17,23 @@ public class RotateBarrel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        if (PlayerVariables.isPlaying)
+        {
 
-        yRotation -= mouseY;
-        yRotation = Mathf.Clamp(yRotation, -45.0f, 5.0f);
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        playerBody.transform.localRotation = Quaternion.Euler(yRotation, 0f, 0f);
+            yRotation -= mouseY;
+            yRotation = Mathf.Clamp(yRotation, -45.0f, 5.0f);
+
+            playerBody.transform.localRotation = Quaternion.Euler(yRotation, 0f, 0f);
+        }
+    }
+
+
+    //Keep cursor on screen for UI changes
+  public void OnGUI()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
     }
 }

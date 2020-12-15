@@ -10,9 +10,9 @@ public class BoxVariables : MonoBehaviour
     public Vector3 pos;
     public float weight;
     public float gravity;
-    public bool collidingTank = false;
-    public bool onGround = false;
-    public bool collidingOtherBox = false;
+    public bool collidingTank;
+    public bool onGround;
+    public bool collidingOtherBox;
     public float GravityForce = 0f;
     public float FrictionForce =0f;
     public float coefficientFriction;
@@ -22,7 +22,7 @@ public class BoxVariables : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         velocity = new Vector3(0f, 0f, 0f);
         acceleration = new Vector3(0f, 0f, 0f);
@@ -30,43 +30,68 @@ public class BoxVariables : MonoBehaviour
         coefficientFriction = 0.1f;
         weight = 5f;
         gravity = -9.81f;
+        collidingTank = false;
+        onGround = false;
+        collidingOtherBox = false;
 
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        if (velocity.magnitude >= 0.1f)
+        if (PlayerVariables.isPlaying)
         {
-            acceleration = velocity.normalized * coefficientFriction * gravity;
-        }
-        else
-        {
-            velocity = Vector3.zero;
-        }
-        if (!onGround)
-        {
-        acceleration.y = gravity;
-        }
-       // else
-          // acceleration.y = 0f;
+
+            if (velocity.magnitude >= 0.1f)
+            {
+                acceleration = velocity.normalized * coefficientFriction * gravity;
+            }
+            else
+            {
+                velocity = Vector3.zero;
+            }
+            if (!onGround || !collidingOtherBox)
+            {
+                acceleration.y = gravity;
+            }
+            // else
+            // acceleration.y = 0f;
 
 
-        //Debug.Log(velocity.magnitude);
+            //Debug.Log(velocity.magnitude);
 
 
-        velocity += acceleration;
+            velocity += acceleration;
 
 
-         pos = transform.position;
+            pos = transform.position;
             pos += velocity * Time.deltaTime;
-           transform.position = pos;
+            transform.position = pos;
             //Debug.Log(indiviBox.GetComponent<BoxVariables>().velocity);
 
-        // GameObject test = GameObject.Find("Ground").GetComponent<BoxGeneration>().boxArray[0];
+            // GameObject test = GameObject.Find("Ground").GetComponent<BoxGeneration>().boxArray[0];
 
 
-        momentum = velocity * weight;
+            momentum = velocity * weight;
 
+            Debug.Log("Weight: " + weight);
+        }
     }
+
+    public void adjustMass(float newWeight)
+    {
+        //float weight = 5f; 
+        weight = newWeight;
+        Debug.Log("Weight");
+        //return newWeight;
+    }
+
+    public void adjustFriction(float newFriction)
+    {
+        float coefficientFriction = 0.1f;
+        coefficientFriction = newFriction;
+        //return newFriction;
+    }
+    
 }

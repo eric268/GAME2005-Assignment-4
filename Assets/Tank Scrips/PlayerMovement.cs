@@ -12,10 +12,13 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float z = Input.GetAxis("Vertical");
+        if (PlayerVariables.isPlaying)
+        {
+            float z = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.forward * z;
+            Vector3 move = transform.forward * z;
 
-        controller.Move(move * speed * Time.deltaTime);
+            controller.Move(move * speed * Time.deltaTime);
+        }
     }
 }

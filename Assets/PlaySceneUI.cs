@@ -4,7 +4,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlaySceneUI : MonoBehaviour
-{
+{ 
+public void Play()
+    {
+        PlayerVariables.isPlaying = true;
+      
+    }
+
+
     public void QuitScene()
 
     {
