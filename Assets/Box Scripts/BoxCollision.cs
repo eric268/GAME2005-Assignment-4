@@ -613,7 +613,7 @@ public class BoxCollision : MonoBehaviour
                 }
                 if (checkCollisionFrontZAxis(box, wallArray[j]))
                 {
-                    offsetCollision(wallArray[j], box, planeDirection.Z_AXIS_NEGATIVE);
+                    //offsetCollision(wallArray[j], box, planeDirection.Z_AXIS_NEGATIVE);
                     box.GetComponent<BoxVariables>().velocity.z = -box.GetComponent<BoxVariables>().velocity.z;
                     //box.GetComponent<BoxVariables>().velocity.x = -box.GetComponent<BoxVariables>().velocity.x;
                     //Debug.Log(box.name + " collding Z_AXIS");
@@ -621,7 +621,7 @@ public class BoxCollision : MonoBehaviour
                 else if (checkCollisionBackZAxis(box, wallArray[j]))
                 {
                     //Debug.LogError(directionCollision);
-                    offsetCollision(wallArray[j], box, planeDirection.Z_AXIS_POSITIVE);
+                    //offsetCollision(wallArray[j], box, planeDirection.Z_AXIS_POSITIVE);
                     box.GetComponent<BoxVariables>().velocity.z = -box.GetComponent<BoxVariables>().velocity.z;
                     //box.GetComponent<BoxVariables>().velocity.x = -box.GetComponent<BoxVariables>().velocity.x;
                     //Debug.Log(box.name + " collding Z_AXIS");
